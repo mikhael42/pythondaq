@@ -91,7 +91,7 @@ for i in range (0, 34, 1):
 list_all_U_ = []
 list_all_I_ = [] 
 
-N_repeat = 3
+N_repeat = 2
 
 
 for j in range (0, 34, 1): #voltage changes from 0 to maximum value 
@@ -143,10 +143,6 @@ err_U, err_I = flags(f_U, f_I)
 
 
 print(err_U)
-
-print(err_I)
-
-
 
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
 plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 4)
