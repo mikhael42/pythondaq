@@ -54,7 +54,7 @@ def statistics(list):
         total_ = _ + _oud 
         _oud = total_
 
-    rho = (1/N) * math.sqrt(total_)
+    rho = math.sqrt(total_/N)
 
     return mean_x, rho
 
@@ -68,8 +68,8 @@ def U_I_determination(i):
     raw_voltage_LED = float(raw_1) - float(raw_2)
     raw_voltage_resistor = float(raw_2)
 
-    U_1 = float(device.query("MEAS:CH1?")) * (3.3/1023)# measure voltage at channel 1 = voltage u1 (parallel to LED+resistor)
-    U_2 = float(device.query("MEAS:CH2?")) * (3.3/1023) # measure voltage at channel 2 = voltage resistor 
+    U_1 = float(device.query("MEAS:CH1?")) * (3.3/1024)# measure voltage at channel 1 = voltage u1 (parallel to LED+resistor)
+    U_2 = float(device.query("MEAS:CH2?")) * (3.3/1024) # measure voltage at channel 2 = voltage resistor 
 
     U_LED = U_1 - U_2
     I_LED = (U_2/220) * 1000  #with resistance of 220 Ohm 
@@ -147,7 +147,7 @@ print(err_I)
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
 plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 4)
 plt.show()
-
+#
 #plt.plot(list_voltages_led, list_I_led, 'o', color='red')
 #plt.xlabel("U (LED) [V]")
 #plt.ylabel("I (LED) [mA]")
