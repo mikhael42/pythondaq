@@ -91,11 +91,14 @@ for i in range (0, 34, 1):
 list_all_U_ = []
 list_all_I_ = [] 
 
+N_repeat = 3
+
+
 for j in range (0, 34, 1): #voltage changes from 0 to maximum value 
     results_U =[]
     results_I=[] 
 
-    for m in range (20): #each step will be repeated 50 times 
+    for m in range (N_repeat): #each step will be repeated 50 times 
         _voltage, _U, _I, _U_2 = U_I_determination(j)
         results_U.append(_U)
         results_I.append(_I)
@@ -118,7 +121,6 @@ for n in range (0, 34, 1):
     list_mean_I.append(I_mean)
     f_I.append(I_f)
 
-device.query("OUT:CH0:VOLT 0") #set voltage back to 0
 
 #afwijking van gem
 
@@ -128,8 +130,8 @@ def flags(list_f_U, list_f_I):
     error_I = []
     for g in list_f_U:
 
-        div_s_U = g/(math.sqrt(20))
-        div_s_I = list_f_I[i]/(math.sqrt(20))
+        div_s_U = g/(math.sqrt(N_repeat))
+        div_s_I = list_f_I[i]/(math.sqrt(N_repeat))
         i=i+1
 
         error_U.append(div_s_U)
@@ -144,11 +146,15 @@ print(err_U)
 
 print(err_I)
 
+
+
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
 plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 4)
 plt.show()
 #
 #plt.plot(list_voltages_led, list_I_led, 'o', color='red')
-#plt.xlabel("U (LED) [V]")
-#plt.ylabel("I (LED) [mA]")
-#plt.savefig("IU-LED.png")
+plt.xlabel("U (LED) [V]")
+plt.ylabel("I (LED) [mA]")
+plt.savefig("IU-LED.png")
+
+device.query("OUT:CH0:VOLT 0") #set voltage back to 0
