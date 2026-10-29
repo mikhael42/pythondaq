@@ -145,7 +145,7 @@ print(err_U)
 print(err_I)
 
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
-plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red')
+plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 4)
 plt.show()
 
 #plt.plot(list_voltages_led, list_I_led, 'o', color='red')
