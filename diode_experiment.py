@@ -1,33 +1,25 @@
-# connect to Arduino
-# set output voltage from 0 to max
-#   measure voltages
-#   calculate voltage LED
-#   calculate voltage resistor
-#   print LED: raw_voltage_LED (voltage_LED V) Resistor: raw_voltage_resistor (voltage_resistor V)
+
+#   set number of repeated measurements
+#  -     measure voltages 
+#   -    calculate voltage LED
+#     -  calculate current LED
+# -  calculate average voltage LED and uncertainty
+#  - calculate average current LED and uncertainty
+#   print average voltage: average_voltage_LED +/- err_average_voltage_LED V  average current: average_current_LED +/- err_average_current_LED A
+#
+# -turn LED off
+# -create csv-file
+# -plot average_current_LED vs average_voltage_LED
 
 import pyvisa
 import matplotlib.pyplot as plt
 import math 
+import csv
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 
 device = rm.open_resource("ASRL/dev/cu.usbmodem14101::INSTR", read_termination="\r\n", write_termination="\n")
-
-#FOR VOLTAGE == 0
-
-#voltage = device.query("OUT:CH0:VOLT 0")
-##U_1 = float(device.query("MEAS:CH1?")) * (3.3/1023)# measure voltage at channel 1 - voltage U1 (parallel to LED+resistor)
-#U_2 = float(device.query("MEAS:CH2?")) * (3.3/1023)# measure voltage at channel 2 - voltage resistor (= voltage U2)
-
-#U_LED = float(U_1) - float(U_2)
-#U_tot = float(U_2) + float(U_LED)
-#print(f"LED: {U_LED} V, Resistor: {U_2} V")
-#print(f"Total voltage: {U_tot} V must be equal to set voltage: {voltage} V")
-
-#output = LED: 0.0 V, Resistor: 0.0 V
-
-#range of voltages
 
 list_voltages = []
 list_voltages_led =[]
@@ -145,15 +137,24 @@ def flags(list_f_U, list_f_I):
 err_U, err_I = flags(f_U, f_I)
 
 
-print(err_U)
+with open("U_I_LED_with_errors.csv", "w", newline="") as csvfile:
+
+    writer = csv.writer(csvfile)
+    writer.writerow(["voltage [V]", "current[A]"])
+
+    for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):
+        print(f"Avarage voltage = {U_mean_csv} +/- {err_U_csv}, Avarage current {I_mean_csv} +/- {err_I_csv}")
+    
+        writer.writerow([U_mean_csv, err_U_csv, I_mean_csv, err_I_csv])
+...
+    # na dit blok sluit Python automatisch het bestand
 
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
 plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 4)
-plt.show()
-#
-#plt.plot(list_voltages_led, list_I_led, 'o', color='red')
-plt.xlabel("U (LED) [V]")
-plt.ylabel("I (LED) [mA]")
-plt.savefig("IU-LED.png")
+
+plt.xlabel("avarage U (LED) [V]")
+plt.ylabel("avarage I (LED) [mA]")
+
+plt.savefig("IU-LED_avarage.png")
 
 device.query("OUT:CH0:VOLT 0") #set voltage back to 0
