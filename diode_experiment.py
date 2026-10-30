@@ -91,6 +91,8 @@ for i in range (0, 34, 1):
 list_all_U_ = []
 list_all_I_ = [] 
 
+#Now lets find the mean values and errors
+
 N_repeat = 2
 
 
@@ -98,7 +100,7 @@ for j in range (0, 34, 1): #voltage changes from 0 to maximum value
     results_U =[]
     results_I=[] 
 
-    for m in range (N_repeat): #each step will be repeated 50 times 
+    for m in range (N_repeat): #each step will be repeated -N_repeat- times 
         _voltage, _U, _I, _U_2 = U_I_determination(j)
         results_U.append(_U)
         results_I.append(_I)
@@ -113,6 +115,7 @@ list_mean_U = []
 list_mean_I = [] 
 
 for n in range (0, 34, 1):
+
     U_mean, U_f = statistics(list_all_U_[n])
     list_mean_U.append(U_mean)
     f_U.append(U_f)
@@ -130,8 +133,8 @@ def flags(list_f_U, list_f_I):
     error_I = []
     for g in list_f_U:
 
-        div_s_U = g/(math.sqrt(N_repeat))
-        div_s_I = list_f_I[i]/(math.sqrt(N_repeat))
+        div_s_U = g * (math.sqrt(N_repeat))
+        div_s_I = list_f_I[i] * (math.sqrt(N_repeat))
         i=i+1
 
         error_U.append(div_s_U)
