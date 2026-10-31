@@ -120,15 +120,15 @@ for n in range (0, 34, 1):
 #afwijking van gem
 
 def flags(list_f_U, list_f_I):
-    i=0
+
     error_U =[]
     error_I = []
-    for g in list_f_U:
+    for k, l in zip(list_f_U, list_f_I):
 
-        div_s_U = g * (math.sqrt(N_repeat))
-        div_s_I = list_f_I[i] * (math.sqrt(N_repeat))
-        i=i+1
+        div_s_U = k / (math.sqrt(N_repeat))
+        div_s_I = l / (math.sqrt(N_repeat))
 
+        
         error_U.append(div_s_U)
         error_I.append(div_s_I)
 
