@@ -69,7 +69,7 @@ list_all_I_ = []
 
 #Now lets find the mean values and errors
 
-N_repeat = 3
+N_repeat = 3 #we repeat measurments N_repeat times 
 
 for j in range (0, 34, 1): #voltage changes from 0 to maximum value 
     results_U =[]
@@ -80,7 +80,7 @@ for j in range (0, 34, 1): #voltage changes from 0 to maximum value
         results_U.append(_U)
         results_I.append(_I)
       
-    list_all_U_.append(results_U)
+    list_all_U_.append(results_U) #list with all results of voltage LED for each step
     list_all_I_.append(results_I) 
 
 f_U =[]
