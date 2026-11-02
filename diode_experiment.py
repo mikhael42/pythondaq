@@ -5,7 +5,7 @@
 #     -  calculate current LED
 # -  calculate average voltage LED and uncertainty
 #  - calculate average current LED and uncertainty
-#   print average voltage: average_voltage_LED +/- err_average_voltage_LED V  average current: average_current_LED +/- err_average_current_LED A
+#   -print average voltage: average_voltage_LED +/- err_average_voltage_LED V  average current: average_current_LED +/- err_average_current_LED A
 #
 # -turn LED off
 # -create csv-file
