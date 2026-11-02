@@ -137,7 +137,7 @@ def flags(list_f_U, list_f_I):
 err_U, err_I = flags(f_U, f_I)
 
 
-with open("U_I_LED_with_errors.csv", "w", newline="") as csvfile:
+with open("U_I_LED_with_errors_001.csv", "w", newline="") as csvfile:
 
     writer = csv.writer(csvfile)
     writer.writerow(["voltage [V]", "current[A]"])
