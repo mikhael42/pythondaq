@@ -15,18 +15,12 @@ import pyvisa
 import matplotlib.pyplot as plt
 import math 
 import csv
+import numpy as np 
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
 
 device = rm.open_resource("ASRL/dev/cu.usbmodem14101::INSTR", read_termination="\r\n", write_termination="\n")
-
-list_voltages = []
-list_voltages_led =[]
-list_I_led = [] 
-list_voltages_resistor =[]
-list_raw_led = []
-list_raw_resistor = []
 
 #mean determination 
 def statistics(list): 
@@ -37,31 +31,30 @@ def statistics(list):
         total = x + x_oud
         x_oud = total 
 
-    mean_x = (1/N) * total 
+    mean_x = total/N
 
     _oud = 0 
-
+#numpy std 
     for y in list: 
         _ = (y - mean_x)**2
         total_ = _ + _oud 
         _oud = total_
 
-    rho = math.sqrt(total_/N)
+    rho = math.sqrt(total_ / (N-1))
 
     return mean_x, rho
 
 def U_I_determination(i): 
-
     voltage = device.query(f"OUT:CH0:VOLT {i/10}")
 
     raw_1 = device.query(f"MEAS:CH1?")
     raw_2 = device.query(f"MEAS:CH2?")
 
-    raw_voltage_LED = float(raw_1) - float(raw_2)
-    raw_voltage_resistor = float(raw_2)
+    #raw_voltage_LED = float(raw_1) - float(raw_2)
+    #raw_voltage_resistor = float(raw_2)
 
-    U_1 = float(device.query("MEAS:CH1?")) * (3.3/1024)# measure voltage at channel 1 = voltage u1 (parallel to LED+resistor)
-    U_2 = float(device.query("MEAS:CH2?")) * (3.3/1024) # measure voltage at channel 2 = voltage resistor 
+    U_1 = float(raw_1) * (3.3/1024)# measure voltage at channel 1 = voltage u1 (parallel to LED+resistor)
+    U_2 = float(raw_2) * (3.3/1024) # measure voltage at channel 2 = voltage resistor 
 
     U_LED = U_1 - U_2
     I_LED = (U_2/220) * 1000  #with resistance of 220 Ohm 
@@ -71,22 +64,12 @@ def U_I_determination(i):
     return voltage, U_LED, I_LED, U_2
 
 
-for i in range (0, 34, 1):
-
-    voltage_, U_LED, I_LED, U_2 = U_I_determination(i)
-    
-    list_voltages.append(float(voltage_)) #add voltage to list
-    list_voltages_led.append(U_LED) #add voltage LED to list
-    list_I_led.append(I_LED)
-    list_voltages_resistor.append(U_2) #add voltage resistor to list
-
 list_all_U_ = []
 list_all_I_ = [] 
 
 #Now lets find the mean values and errors
 
-N_repeat = 2
-
+N_repeat = 3
 
 for j in range (0, 34, 1): #voltage changes from 0 to maximum value 
     results_U =[]
@@ -96,7 +79,7 @@ for j in range (0, 34, 1): #voltage changes from 0 to maximum value
         _voltage, _U, _I, _U_2 = U_I_determination(j)
         results_U.append(_U)
         results_I.append(_I)
-
+      
     list_all_U_.append(results_U)
     list_all_I_.append(results_I) 
 
@@ -111,10 +94,15 @@ for n in range (0, 34, 1):
     U_mean, U_f = statistics(list_all_U_[n])
     list_mean_U.append(U_mean)
     f_U.append(U_f)
+    #list_mean_U.append(np.mean(list_all_U_[n]))
+    #f_U.append(np.std(list_all_U_[n], ddof=1)) #U_f or numpy 
+   
 
     I_mean, I_f = statistics(list_all_I_[n])
     list_mean_I.append(I_mean)
     f_I.append(I_f)
+    #list_mean_I.append(np.mean(list_all_I_[n]))
+    #f_I.append(np.std(list_all_I_[n], ddof=1))#U_f or numpy 
 
 
 #afwijking van gem
@@ -123,12 +111,12 @@ def flags(list_f_U, list_f_I):
 
     error_U =[]
     error_I = []
+
     for k, l in zip(list_f_U, list_f_I):
 
         div_s_U = k / (math.sqrt(N_repeat))
-        div_s_I = l / (math.sqrt(N_repeat))
+        div_s_I = (l / (math.sqrt(N_repeat)))
 
-        
         error_U.append(div_s_U)
         error_I.append(div_s_I)
 
@@ -140,7 +128,7 @@ err_U, err_I = flags(f_U, f_I)
 with open("U_I_LED_with_errors_001.csv", "w", newline="") as csvfile:
 
     writer = csv.writer(csvfile)
-    writer.writerow(["voltage [V]", "current[A]"])
+    writer.writerow(["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"])
 
     for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):
         print(f"Avarage voltage = {U_mean_csv} +/- {err_U_csv}, Avarage current {I_mean_csv} +/- {err_I_csv}")
@@ -150,11 +138,11 @@ with open("U_I_LED_with_errors_001.csv", "w", newline="") as csvfile:
     # na dit blok sluit Python automatisch het bestand
 
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
-plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 4)
+plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='red', markersize = 2)
 
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
-
-plt.savefig("IU-LED_avarage.png")
+#plt.show()
+plt.savefig("IU-LED_avarage_my_version.png")
 
 device.query("OUT:CH0:VOLT 0") #set voltage back to 0
