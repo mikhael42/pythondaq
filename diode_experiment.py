@@ -57,7 +57,7 @@ def U_I_determination(i):
     U_2 = float(raw_2) * (3.3/1024) # measure voltage at channel 2 = voltage resistor 
 
     U_LED = U_1 - U_2
-    I_LED = (U_2/220) * 1000  #with resistance of 220 Ohm 
+    I_LED = (U_2/220) * 1000  #with resistance of 220 Ohm, and current is low, so multiply by 1000
 
         #print(f"U LED = {U_LED} V")
         #print(f"I LED = {I_LED} mA")
