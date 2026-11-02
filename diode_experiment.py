@@ -97,7 +97,6 @@ for n in range (0, 34, 1):
     #list_mean_U.append(np.mean(list_all_U_[n]))
     #f_U.append(np.std(list_all_U_[n], ddof=1)) #U_f or numpy 
    
-
     I_mean, I_f = statistics(list_all_I_[n])
     list_mean_I.append(I_mean)
     f_I.append(I_f)
@@ -143,6 +142,6 @@ plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='r
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
 #plt.show()
-plt.savefig("IU-LED_avarage_my_version.png")
+plt.savefig("IU-LED_avarage_my_version_2.png")
 
 device.query("OUT:CH0:VOLT 0") #set voltage back to 0
