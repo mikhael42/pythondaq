@@ -8,27 +8,27 @@ def list_resources():
 
 
 class ArduinoVISADevice:
-    def __init__(self, i):
+    def __init__(self, port):
         self.rm = pyvisa.ResourceManager("@py")
-        self.i = i
 
-    def get_identification(self):
         self.device = self.rm.open_resource(
-            "ASRL/dev/cu.usbmodem14101::INSTR",
+            port,
             read_termination="\r\n",
             write_termination="\n",
         )
+
+    def get_identification(self):
         return self.device
         # return identification string of connected device
 
-    def set_output_value(self):
-        self.raw = self.device.query(f"OUT:CH0{(self.i / 10) * 1024 / 3.3}")
+    def set_output_value(self, value):
+        self.raw = self.device.query(f"OUT:CH0{value}")
         return self.raw
 
     #        set a value on the output channel
     #
-    def set_output_voltage(self):
-        self.voltage = self.device.query(f"OUT:CH0:VOLT {self.i / 10}")
+    def set_output_voltage(self, voltage):
+        self.voltage = self.device.query(f"OUT:CH0:VOLT {voltage}")
         return self.voltage
 
     #        set a voltage on the output channel (in Volt)
@@ -43,15 +43,16 @@ class ArduinoVISADevice:
 
     #        return the voltage of the output channel (in Volt)
     #
-    def get_input_value(self):
-        self.raw_1 = self.device.query("MEAS:CH1?")
-        return self.raw_1
+    def get_input_value(self, channel):
+        raw = self.device.query(f"MEAS:CH{channel}?")
+        return raw
 
     #        return the value of the input channel
     #
-    def get_input_voltage(self):
-        self.voltage_1 = float(self.raw_1) * (3.3 / 1024)
-        return self.voltage_1
+    def get_input_voltage(self, channel):
+        raw_ = self.device.query(f"MEAS:CH{channel}?")
+        voltage = float(raw_) * (3.3 / 1024)
+        return voltage
 
 
 #        return the voltage of the input channel (in Volt)
@@ -63,7 +64,11 @@ class ArduinoVISADevice:
 print(list_resources())
 
 # create an instance for the Arduino on port "ASRL28::INSTR"
-device = ArduinoVISADevice(port="ASRL28::INSTR")
+# device = ArduinoVISADevice(port="ASRL28::INSTR")
+device = ArduinoVISADevice(
+    port="ASRL/dev/cu.usbmodem14101::INSTR"
+)  # I use thisone because I/m using mac
+
 
 # print identification string
 identification = device.get_identification()
