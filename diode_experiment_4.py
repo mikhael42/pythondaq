@@ -30,7 +30,7 @@ class DiodeExperiment:
         return mean_x, rho
 
 
-    def U_I_determination(self, i):
+    def scan(self, i):
 
         self.device.set_output_voltage(i / 10)  # we are setting a certan V
 
@@ -55,7 +55,7 @@ class DiodeExperiment:
             results_I = []
 
             for m in range(N_repeat):  # each step will be repeated -N_repeat- times
-                U_LED_, I_LED_ = self.U_I_determination(j)
+                U_LED_, I_LED_ = self.scan(j)
                 results_U.append(U_LED_)
                 results_I.append(I_LED_)
 
