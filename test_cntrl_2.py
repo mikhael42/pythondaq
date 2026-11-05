@@ -54,7 +54,6 @@ class ArduinoVISADevice:
         voltage = float(raw_) * (3.3 / 1024)
         return voltage
 
-
 #        return the voltage of the input channel (in Volt)
 
 

@@ -38,7 +38,11 @@ class ArduinoVISADevice:
     def __init__(self, port):
         self.rm = pyvisa.ResourceManager("@py")
 
-        self.device = self.rm.open_resource(port,read_termination="\r\n",write_termination="\n",)
+        self.device = self.rm.open_resource(
+            port,
+            read_termination="\r\n",
+            write_termination="\n",
+        )
 
     def get_identification(self):
         return self.device
@@ -89,7 +93,9 @@ def U_I_determination(i):
     U_2 = device.get_input_voltage(channel=2)  # we determine U in channel 2
 
     U_LED = U_1 - U_2
-    I_LED = (U_2 / 220) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
+    I_LED = (
+        U_2 / 220
+    ) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
 
     return U_LED, I_LED
 
@@ -152,15 +158,22 @@ with open("002_U_I_LED_with_errors.csv", "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"])
     for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):
-
-        print(f"Avarage voltage = {U_mean_csv} +/- {err_U_csv}, Avarage current {I_mean_csv} +/- {err_I_csv}")
+        #print(f"Avarage voltage = {U_mean_csv} +/- {err_U_csv}, Avarage current {I_mean_csv} +/- {err_I_csv}")
 
         writer.writerow([U_mean_csv, err_U_csv, I_mean_csv, err_I_csv])
 
     # na dit blok sluit Python automatisch het bestand
 # print identification string
 
-plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt="o", color="red", markersize=2)
+print(list_resources())
+
+identification = device.get_identification()
+
+print(identification)
+
+plt.errorbar(
+    list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt="o", color="red", markersize=2
+)
 
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
