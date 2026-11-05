@@ -22,7 +22,7 @@ class ArduinoVISADevice:
         # return identification string of connected device
 
     def set_output_value(self, value):
-        self.raw = self.device.query(f"OUT:CH0{value}")
+        self.raw = self.device.query(f"OUT:CH0 {value}")
         return self.raw
 
     #        set a value on the output channel
