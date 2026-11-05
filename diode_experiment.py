@@ -11,11 +11,11 @@
 # -create csv-file
 # -plot average_current_LED vs average_voltage_LED
 
-import pyvisa
-import matplotlib.pyplot as plt
-import math 
 import csv
-import numpy as np 
+import math
+
+import matplotlib.pyplot as plt
+import pyvisa
 
 rm = pyvisa.ResourceManager("@py")
 ports = rm.list_resources()
@@ -47,8 +47,8 @@ def statistics(list):
 def U_I_determination(i): 
     voltage = device.query(f"OUT:CH0:VOLT {i/10}")
 
-    raw_1 = device.query(f"MEAS:CH1?")
-    raw_2 = device.query(f"MEAS:CH2?")
+    raw_1 = device.query("MEAS:CH1?")
+    raw_2 = device.query("MEAS:CH2?")
 
     #raw_voltage_LED = float(raw_1) - float(raw_2)
     #raw_voltage_resistor = float(raw_2)
@@ -133,7 +133,7 @@ with open("U_I_LED_with_errors_001.csv", "w", newline="") as csvfile:
         print(f"Avarage voltage = {U_mean_csv} +/- {err_U_csv}, Avarage current {I_mean_csv} +/- {err_I_csv}")
     
         writer.writerow([U_mean_csv, err_U_csv, I_mean_csv, err_I_csv])
-...
+
     # na dit blok sluit Python automatisch het bestand
 
 #plt.errorbar(list_voltages_led, list_I_led, xerr=f_U, yerr=f_I, fmt='o', color='red')
@@ -141,7 +141,7 @@ plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt='o', color='r
 
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
-#plt.show()
-plt.savefig("IU-LED_avarage_my_version_2.png")
+plt.show()
+#plt.savefig("IU-LED_avarage_my_version_2.png")
 
 device.query("OUT:CH0:VOLT 0") #set voltage back to 0
