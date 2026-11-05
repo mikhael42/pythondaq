@@ -3,13 +3,14 @@ import csv
 import matplotlib.pyplot as plt
 
 from arduino_device import ArduinoVISADevice, list_resources
-from diode_experiment_4 import errors
+from diode_experiment_4 import DiodeExperiment
 
 device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
+experiment = DiodeExperiment()
 
-list_mean_U, list_mean_I, err_U, err_I = errors(3)
+list_mean_U, list_mean_I, err_U, err_I = experiment.errors(3)
 
-with open("004_U_I_LED_with_errors.csv", "w", newline="") as csvfile:
+with open("final_U_I_LED_with_errors.csv", "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(
         ["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"]
@@ -35,7 +36,7 @@ plt.errorbar(
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
 plt.show()
-plt.savefig("IU-LED_genious_version.png")
+plt.savefig("IU-LED_final_run_experiment_result.png")
 # turn of the LED
 
 device.set_output_voltage(voltage=0)
