@@ -17,9 +17,7 @@ class DiodeExperiment:
         U_2 = self.device.get_input_voltage(channel=2)  # we determine U in channel 2
 
         U_LED = U_1 - U_2
-        I_LED = (
-            U_2 / 220
-        ) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
+        I_LED = (U_2 / 220) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
 
         return U_LED, I_LED
 
@@ -35,19 +33,11 @@ class DiodeExperiment:
 
             for m in range(N_repeat):  # each voltage will be repeated -N_repeat- times
                 U_LED_, I_LED_ = self.scan(j)
-                results_U.append(
-                    U_LED_
-                )  # list with different U LED, vary between different interations
-                results_I.append(
-                    I_LED_
-                )  # list with different I LED, vary between different interations
+                results_U.append(U_LED_)  # list with different U LED, vary between different interations
+                results_I.append(I_LED_)  # list with different I LED, vary between different interations
 
-            list_all_U_.append(
-                results_U
-            )  # list containing lists of different U (LED) pet U we try
-            list_all_I_.append(
-                results_I
-            )  # list containing lists of different I (LED) pet U we try
+            list_all_U_.append(results_U)  # list containing lists of different U (LED) pet U we try
+            list_all_I_.append(results_I)  # list containing lists of different I (LED) pet U we try
 
         f_U = []
         f_I = []
@@ -55,9 +45,7 @@ class DiodeExperiment:
         list_mean_U = []
         list_mean_I = []
 
-        for n in range(
-            0, 34, 1
-        ):  # for each voltage we try. We try 34 different voltages (between 0 and 3.3)
+        for n in range(0, 34, 1):  # for each voltage we try. We try 34 different voltages (between 0 and 3.3)
             U_mean = np.mean(list_all_U_[n])
             U_f = np.std(list_all_U_[n])
             list_mean_U.append(U_mean)
