@@ -2,15 +2,15 @@ import csv
 
 import matplotlib.pyplot as plt
 
-from arduino_device import (  #import of classes from arduino devise file
+from arduino_device import (  # import of classes from arduino devise file
     ArduinoVISADevice,
     list_resources,
 )
 from diode_experiment_4 import (
-    DiodeExperiment,  #import needed class from diode_experiment
+    DiodeExperiment,  # import needed class from diode_experiment
 )
 
-#diode_experiment_4 is a version of the original diode_experiment, but updated to fit new exercise 
+# diode_experiment_4 is a version of the original diode_experiment, but updated to fit new exercise
 device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
 experiment = DiodeExperiment()
 
@@ -21,7 +21,9 @@ with open("final_U_I_LED_with_errors.csv", "w", newline="") as csvfile:
     writer.writerow(
         ["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"]
     )
-    for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):
+    for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(
+        list_mean_U, list_mean_I, err_U, err_I
+    ):
         writer.writerow([U_mean_csv, err_U_csv, I_mean_csv, err_I_csv])
 
     # na dit blok sluit Python automatisch het bestand
@@ -30,8 +32,10 @@ print(list_resources())
 identification = device.get_identification()
 print(identification)
 
-#after that it's time to plot our data 
-plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt="o", color="red", markersize=2)
+# after that it's time to plot our data
+plt.errorbar(
+    list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt="o", color="red", markersize=2
+)
 
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
