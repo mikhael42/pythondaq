@@ -2,9 +2,15 @@ import csv
 
 import matplotlib.pyplot as plt
 
-from arduino_device import ArduinoVISADevice, list_resources
-from diode_experiment_4 import DiodeExperiment
+from arduino_device import (  #import of classes from arduino devise file
+    ArduinoVISADevice,
+    list_resources,
+)
+from diode_experiment_4 import (
+    DiodeExperiment,  #import needed class from diode_experiment
+)
 
+#diode_experiment_4 is a version of the original diode_experiment, but updated to fit new exercise 
 device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
 experiment = DiodeExperiment()
 
@@ -20,13 +26,11 @@ with open("final_U_I_LED_with_errors.csv", "w", newline="") as csvfile:
 
     # na dit blok sluit Python automatisch het bestand
 # print identification string
-
 print(list_resources())
-
 identification = device.get_identification()
-
 print(identification)
 
+#after that it's time to plot our data 
 plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt="o", color="red", markersize=2)
 
 plt.xlabel("avarage U (LED) [V]")
