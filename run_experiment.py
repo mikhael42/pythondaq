@@ -39,7 +39,7 @@ plt.errorbar(
 
 plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
-plt.show()
+# plt.show()
 plt.savefig("IU-LED_final_run_experiment_result.png")
 # turn off the LED
 
