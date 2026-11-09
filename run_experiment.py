@@ -37,6 +37,6 @@ plt.xlabel("avarage U (LED) [V]")
 plt.ylabel("avarage I (LED) [mA]")
 plt.show()
 plt.savefig("IU-LED_final_run_experiment_result.png")
-# turn of the LED
+# turn off the LED
 
 device.set_output_voltage(voltage=0)
