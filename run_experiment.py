@@ -17,6 +17,9 @@ experiment = DiodeExperiment()
 list_mean_U, list_mean_I, err_U, err_I = experiment.errors(3)
 
 with open("final_U_I_LED_with_errors.csv", "w", newline="") as csvfile:
+    """this section of the code makes a csv file and adds all the mean values of current and voltage together with uncertainties in one csv file
+    """
+
     writer = csv.writer(csvfile)
     writer.writerow(["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"])
     for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):

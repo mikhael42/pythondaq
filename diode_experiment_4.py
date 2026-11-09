@@ -7,9 +7,19 @@ from arduino_device import ArduinoVISADevice
 
 class DiodeExperiment:
     def __init__(self):
+        """_summary_ device identification,
+        """
         self.device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
 
     def scan(self, i):
+        """this function can be used to determine voltage and current by LED
+
+        Args:
+            i (float): a certain voltage we put on our arduino 
+
+        Returns:
+            U(LED), U(LED) (float): voltage and current at our LED 
+        """
 
         self.device.set_output_voltage(i)  # we are setting a certan V
 
@@ -24,6 +34,14 @@ class DiodeExperiment:
     # Now lets find the mean values and errors
 
     def errors(self, N_repeat):
+        """with function determines the mean values of current and voltage (of LED) and determines the uncertainty 
+
+        Args:
+            N_repeat (int): the total amount of iteration we use to determine the mean value of U and I 
+
+        Returns:
+            list: 1. list with all the mean values (voltage), 2. list with all mean values (current), 3. list uncertainties per mean voltage, 4. list uncertainties per current
+        """
         list_all_U_ = []
         list_all_I_ = []
 
