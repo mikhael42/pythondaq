@@ -26,9 +26,7 @@ class DiodeExperiment:
         U_2 = self.device.get_input_voltage(channel=2)  # we determine U in channel 2
 
         U_LED = U_1 - U_2
-        I_LED = (
-            U_2 / 220
-        ) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
+        I_LED = (U_2 / 220)  # with resistance of 220 Ohm, and current is low, so multiply by 1000
 
         return U_LED, I_LED
 

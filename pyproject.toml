@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pythondaq = "pythondaq.app:main"
+pythondaq = "pythondaq.run_experiment:main"
 
 [build-system]
 requires = ["uv_build>=0.13.6,<0.14.0"]
