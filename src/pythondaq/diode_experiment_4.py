@@ -2,23 +2,22 @@ import math
 
 import numpy as np
 
-from arduino_device import ArduinoVISADevice
+from pythondaq.arduino_device import ArduinoVISADevice
 
 
 class DiodeExperiment:
     def __init__(self):
-        """_summary_ device identification,
-        """
+        """_summary_ device identification,"""
         self.device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
 
     def scan(self, i):
         """this function can be used to determine voltage and current by LED
 
         Args:
-            i (float): a certain voltage we put on our arduino 
+            i (float): a certain voltage we put on our arduino
 
         Returns:
-            U(LED), U(LED) (float): voltage and current at our LED 
+            U(LED), U(LED) (float): voltage and current at our LED
         """
 
         self.device.set_output_voltage(i)  # we are setting a certan V
@@ -27,17 +26,19 @@ class DiodeExperiment:
         U_2 = self.device.get_input_voltage(channel=2)  # we determine U in channel 2
 
         U_LED = U_1 - U_2
-        I_LED = (U_2 / 220) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
+        I_LED = (
+            U_2 / 220
+        ) * 1000  # with resistance of 220 Ohm, and current is low, so multiply by 1000
 
         return U_LED, I_LED
 
     # Now lets find the mean values and errors
 
     def errors(self, N_repeat):
-        """with function determines the mean values of current and voltage (of LED) and determines the uncertainty 
+        """with function determines the mean values of current and voltage (of LED) and determines the uncertainty
 
         Args:
-            N_repeat (int): the total amount of iteration we use to determine the mean value of U and I 
+            N_repeat (int): the total amount of iteration we use to determine the mean value of U and I
 
         Returns:
             list: 1. list with all the mean values (voltage), 2. list with all mean values (current), 3. list uncertainties per mean voltage, 4. list uncertainties per current
@@ -63,7 +64,7 @@ class DiodeExperiment:
         list_mean_U = []
         list_mean_I = []
 
-        for n in range(0, 34, 1):  # for each voltage we try. We try 34 different voltages (between 0 and 3.3)
+        for n in range(0, 33, 1):  # for each voltage we try. We try 34 different voltages (between 0 and 3.3)
             U_mean = np.mean(list_all_U_[n])
             U_f = np.std(list_all_U_[n])
             list_mean_U.append(U_mean)

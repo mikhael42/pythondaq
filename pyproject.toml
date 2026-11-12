@@ -1,0 +1,25 @@
+[project]
+name = "pythondaq"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "mikhael42", email = "mikhael.samurai@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "pyserial>=3.5",
+    "pyvisa>=1.16.2",
+    "pyvisa-py>=0.8.1",
+    "serial>=0.0.97",
+    "serialpy>=0.1.0",
+]
+
+[project.scripts]
+pythondaq = "pythondaq:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"

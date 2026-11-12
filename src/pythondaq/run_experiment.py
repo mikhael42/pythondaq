@@ -2,11 +2,11 @@ import csv
 
 import matplotlib.pyplot as plt
 
-from arduino_device import (  # import of classes from arduino devise file
+from pythondaq.arduino_device import (  # import of classes from arduino devise file
     ArduinoVISADevice,
     list_resources,
 )
-from diode_experiment_4 import (
+from pythondaq.diode_experiment_4 import (
     DiodeExperiment,  # import needed class from diode_experiment
 )
 

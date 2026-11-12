@@ -3,7 +3,7 @@ import math
 
 import matplotlib.pyplot as plt
 
-from arduino_device import ArduinoVISADevice, list_resources
+from pythondaq.arduino_device import ArduinoVISADevice, list_resources
 
 
 # mean determination
