@@ -12,7 +12,7 @@ from pythondaq.diode_experiment_4 import (
 
 
 def main():
-    # diode_experiment_4 is a version of the original diode_experiment, but updated to fit new exercise
+    # diode_experiment_4 is a version of the original diode_experiment, but updated to fit this assighment
     device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
     experiment = DiodeExperiment()
 
