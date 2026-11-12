@@ -44,17 +44,18 @@ class DiodeExperiment:
         list_all_U_ = []
         list_all_I_ = []
 
-        for j in np.arange(0, 3.3, 0.1):  # voltage changes from 0 to maximum value
+        for j in np.arange(0, 3.3, 0.1):  # voltage changes from 0.0 to maximum value (3.3)
             results_U = []
             results_I = []
 
-            for m in range(N_repeat):  # each voltage will be repeated -N_repeat- times
+            # we repeat measurements with this voltage N_repeat times
+            for m in range(N_repeat):  
                 U_LED_, I_LED_ = self.scan(j)
                 results_U.append(U_LED_)  # list with different U LED, vary between different interations
                 results_I.append(I_LED_)  # list with different I LED, vary between different interations
 
-            list_all_U_.append(results_U)  # list containing lists of different U (LED) pet U we try
-            list_all_I_.append(results_I)  # list containing lists of different I (LED) pet U we try
+            list_all_U_.append(results_U)  # list containing lists of different U (LED) per U we try
+            list_all_I_.append(results_I)  # list containing lists of different I (LED) per U we try
 
         f_U = []
         f_I = []
@@ -62,12 +63,15 @@ class DiodeExperiment:
         list_mean_U = []
         list_mean_I = []
 
-        for n in range(0, 33, 1):  # for each voltage we try. We try 34 different voltages (between 0 and 3.3)
+        for n in range(0, 33, 1):  # for each voltage we try. We try 33 different voltages (between 0.0 and 3.3)
+            #we determine mean U (LED) and st.var. per U we used 
             U_mean = np.mean(list_all_U_[n])
             U_f = np.std(list_all_U_[n])
+            
             list_mean_U.append(U_mean)
             f_U.append(U_f)
 
+            #we determine mean I (LED) and st.var. per U we used 
             I_mean = np.mean(list_all_I_[n])
             I_f = np.std(list_all_I_[n])
 

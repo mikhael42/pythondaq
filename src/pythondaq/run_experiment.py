@@ -27,7 +27,8 @@ def main():
         for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):
             writer.writerow([U_mean_csv, err_U_csv, I_mean_csv, err_I_csv])
 
-        # na dit blok sluit Python automatisch het bestand
+
+
     # print identification string
     print(list_resources())
     identification = device.get_identification()

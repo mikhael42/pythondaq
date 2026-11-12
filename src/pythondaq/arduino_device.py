@@ -13,7 +13,7 @@ def list_resources():
 
 
 class ArduinoVISADevice:
-    """_summary_ class which contains different functions
+    """_summary_ class which contains different functions which perform different measurements 
     """
     def __init__(self, port):
         """_summary_ Device indentification. 
@@ -113,44 +113,12 @@ class ArduinoVISADevice:
         voltage = float(raw_) * (3.3 / 1024)
         return voltage
 
-
-#        return the voltage of the input channel (in Volt)
-
-
-# test code
-
 # get available ports
 print(list_resources())
 
-# create an instance for the Arduino on port "ASRL28::INSTR"
-# device = ArduinoVISADevice(port="ASRL28::INSTR")
-device = ArduinoVISADevice(
-    port="ASRL/dev/cu.usbmodem14101::INSTR"
-)  # I use thisone because I/m using mac
+# create an instance for the Arduino on port "ASRL/dev/cu.usbmodem14101::INSTR" (Mac-equivalent to ASRL28::INSTR)
 
-
-# print identification string
-identification = device.get_identification()
-print(identification)
-
-# set OUTPUT voltage on channel 0 in Volt (0 - 3.3 V)
-response = device.set_output_voltage(voltage=3.3)
-print(f"{response=}")
-
-# set OUTPUT voltage on channel 0 in ADC values (0 - 1023)
-device.set_output_value(value=828)
-
-# measure the voltage on INPUT channel 2 in ADC values (0 - 1023)
-ch2_value = device.get_input_value(channel=2)
-print(f"{ch2_value=}")
-
-# measure the voltage on INPUT channel 2 in Volt (0 - 3.3 V)
-ch2_voltage = device.get_input_voltage(channel=2)
-print(f"{ch2_voltage=}")
-
-# get the previously set OUTPUT voltage on channel 0 in ADC values (0 - 1023)
-ch0_value = device.get_output_value()
-print(f"{ch0_value=}")
+device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")  # I use thisone because I/m using mac
 
 # turn of the LED
 device.set_output_voltage(voltage=0)
