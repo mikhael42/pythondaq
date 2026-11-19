@@ -56,7 +56,7 @@ def main():
     print(list_mean_U, list_mean_I)
 
     plt.xlabel("avarage U (LED) [V]")
-    plt.ylabel("avarage I (LED) [A]")
+    plt.ylabel("avarage I (LED) [mA]")
     # plt.show()
     plt.savefig("final_IU_LED.png")
     # turn off the LED

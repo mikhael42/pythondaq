@@ -28,7 +28,7 @@ class DiodeExperiment:
         U_LED = U_1 - U_2
         I_LED = (
             U_2 / 220
-        )  # with resistance of 220 Ohm, and current is low, so multiply by 1000
+        ) *1000 # with resistance of 220 Ohm, and current is low, so multiply by 1000
 
         return U_LED, I_LED
 
