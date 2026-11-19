@@ -48,7 +48,7 @@ class DiodeExperiment:
             results_U = []
             results_I = []
 
-            # we repeat measurements with this voltage N_repeat times
+ 
             for m in range(N_repeat):  
                 U_LED_, I_LED_ = self.scan(j)
                 results_U.append(U_LED_)  # list with different U LED, vary between different interations

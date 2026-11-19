@@ -12,6 +12,12 @@ from pythondaq.diode_experiment_4 import (
 
 
 def main():
+    """
+    the main function which combines two classes: device identification and experimantal steps
+
+    Returns:
+    this function makes a graph with U_mean and I_mean over each over
+    """
     # diode_experiment_4 is a version of the original diode_experiment, but updated to fit this assighment
     device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
     experiment = DiodeExperiment()
