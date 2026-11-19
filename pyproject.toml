@@ -20,6 +20,7 @@ dependencies = [
 
 [project.scripts]
 pythondaq = "pythondaq.run_experiment:main"
+diode = "pythondaq.cli:cmd_group"
 
 [build-system]
 requires = ["uv_build>=0.13.6,<0.14.0"]
