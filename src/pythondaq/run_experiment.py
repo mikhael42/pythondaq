@@ -29,11 +29,13 @@ def main():
         """
 
         writer = csv.writer(csvfile)
-        writer.writerow(["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"])
-        for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(list_mean_U, list_mean_I, err_U, err_I):
+        writer.writerow(
+            ["voltage [V]", "error voltage [V]", "current [mA]", "error current [mA]"]
+        )
+        for U_mean_csv, I_mean_csv, err_U_csv, err_I_csv in zip(
+            list_mean_U, list_mean_I, err_U, err_I
+        ):
             writer.writerow([U_mean_csv, err_U_csv, I_mean_csv, err_I_csv])
-
-
 
     # print identification string
     print(list_resources())
@@ -41,7 +43,17 @@ def main():
     print(identification)
 
     # after that it's time to plot our data
-    plt.errorbar(list_mean_U, list_mean_I, xerr=err_U, yerr=err_I, fmt="o", color="red", markersize=2)
+    plt.errorbar(
+        list_mean_U,
+        list_mean_I,
+        xerr=err_U,
+        yerr=err_I,
+        fmt="o",
+        color="red",
+        markersize=2,
+    )
+
+    print(list_mean_U, list_mean_I)
 
     plt.xlabel("avarage U (LED) [V]")
     plt.ylabel("avarage I (LED) [A]")
@@ -51,6 +63,6 @@ def main():
 
     device.set_output_voltage(voltage=0)
 
+
 if __name__ == "__main__":
     main()
-

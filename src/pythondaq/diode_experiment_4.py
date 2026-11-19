@@ -26,7 +26,9 @@ class DiodeExperiment:
         U_2 = self.device.get_input_voltage(channel=2)  # we determine U in channel 2
 
         U_LED = U_1 - U_2
-        I_LED = (U_2 / 220)  # with resistance of 220 Ohm, and current is low, so multiply by 1000
+        I_LED = (
+            U_2 / 220
+        )  # with resistance of 220 Ohm, and current is low, so multiply by 1000
 
         return U_LED, I_LED
 
@@ -42,20 +44,29 @@ class DiodeExperiment:
             list: 1. list with all the mean values (voltage), 2. list with all mean values (current), 3. list uncertainties per mean voltage, 4. list uncertainties per current
         """
         list_all_U_1 = []
-        list_all_I_1= []
+        list_all_I_1 = []
 
-        for j in np.arange(0, 3.3, 0.1):  # voltage changes from 0.0 to maximum value (3.3)
+        for j in np.arange(
+            0, 3.3, 0.1
+        ):  # voltage changes from 0.0 to maximum value (3.3)
             results_U = []
             results_I = []
 
- 
-            for m in range(N_repeat):  
+            for m in range(N_repeat):
                 U_LED_1, I_LED_1 = self.scan(j)
-                results_U.append(U_LED_1)  # list with different U LED, vary between different interations
-                results_I.append(I_LED_1)  # list with different I LED, vary between different interations
+                results_U.append(
+                    U_LED_1
+                )  # list with different U LED, vary between different interations
+                results_I.append(
+                    I_LED_1
+                )  # list with different I LED, vary between different interations
 
-            list_all_U_1.append(results_U)  # list containing lists of different U (LED) per U we try
-            list_all_I_1.append(results_I)  # list containing lists of different I (LED) per U we try
+            list_all_U_1.append(
+                results_U
+            )  # list containing lists of different U (LED) per U we try
+            list_all_I_1.append(
+                results_I
+            )  # list containing lists of different I (LED) per U we try
 
         f_U = []
         f_I = []
@@ -63,15 +74,17 @@ class DiodeExperiment:
         list_mean_U = []
         list_mean_I = []
 
-        for n in range(0, 33, 1):  # for each voltage we try. We try 33 different voltages (between 0.0 and 3.3)
-            #we determine mean U (LED) and st.var. per U we used 
+        for n in range(
+            0, 33, 1
+        ):  # for each voltage we try. We try 33 different voltages (between 0.0 and 3.3)
+            # we determine mean U (LED) and st.var. per U we used
             U_mean = np.mean(list_all_U_1[n])
             U_f = np.std(list_all_U_1[n])
-            
+
             list_mean_U.append(U_mean)
             f_U.append(U_f)
 
-            #we determine mean I (LED) and st.var. per U we used 
+            # we determine mean I (LED) and st.var. per U we used
             I_mean = np.mean(list_all_I_1[n])
             I_f = np.std(list_all_I_1[n])
 
@@ -81,9 +94,9 @@ class DiodeExperiment:
         error_U = []
         error_I = []
 
-        for k, l in zip(f_U, f_I):
-            div_s_U = k / (math.sqrt(N_repeat))
-            div_s_I = l / (math.sqrt(N_repeat))
+        for std_af_U, std_af_I in zip(f_U, f_I):
+            div_s_U = std_af_U / (math.sqrt(N_repeat))
+            div_s_I = std_af_I / (math.sqrt(N_repeat))
 
             error_U.append(div_s_U)
             error_I.append(div_s_I)

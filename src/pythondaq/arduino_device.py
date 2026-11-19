@@ -2,7 +2,7 @@ import pyvisa
 
 
 def list_resources():
-    """This function is used to identify connected arduino and provides informations about his ports 
+    """This function is used to identify connected arduino and provides informations about his ports
 
     Returns:
         list: returns a list with all avalable output ports
@@ -13,10 +13,10 @@ def list_resources():
 
 
 class ArduinoVISADevice:
-    """_summary_ class which contains different functions which perform different measurements 
-    """
+    """_summary_ class which contains different functions which perform different measurements"""
+
     def __init__(self, port):
-        """_summary_ Device indentification. 
+        """_summary_ Device indentification.
 
         Args:
             port (int): we provide information which port gives us the values we want to use in our research
@@ -33,13 +33,13 @@ class ArduinoVISADevice:
         """_summary_ this function returns a list of channels from which we can determine voltage
 
         Returns:
-            _type_: returns a overview at it's channels 
+            _type_: returns a overview at it's channels
         """
         return self.device
         # return identification string of connected device
 
     def set_output_value(self, value):
-        """_summary_ This function returns a ADC value 
+        """_summary_ This function returns a ADC value
 
         Args:
             value (int): a certain ADS value we set on our arduino
@@ -53,13 +53,13 @@ class ArduinoVISADevice:
     #        set a value on the output channel
     #
     def set_output_voltage(self, voltage):
-        """_summary_ in this function we set a certain voltage on our arduino 
+        """_summary_ in this function we set a certain voltage on our arduino
 
         Args:
-            voltage (float): voltage value we set on channel 0 
+            voltage (float): voltage value we set on channel 0
 
         Returns:
-            float: returns a voltage we set 
+            float: returns a voltage we set
         """
         self.voltage = self.device.query(f"OUT:CH0:VOLT {voltage}")
         return self.voltage
@@ -67,10 +67,10 @@ class ArduinoVISADevice:
     #        set a voltage on the output channel (in Volt)
     #
     def get_output_value(self):
-        """_summary_ returns ADC value at channel 0 
+        """_summary_ returns ADC value at channel 0
 
         Returns:
-            int: ADC value at channel 0 
+            int: ADC value at channel 0
         """
         return self.raw
 
@@ -80,20 +80,20 @@ class ArduinoVISADevice:
         """_summary_ returns voltage at channel 0
 
         Returns:
-            int: voltage at channel 0 
+            int: voltage at channel 0
         """
         return self.voltage
 
     #        return the voltage of the output channel (in Volt)
     #
     def get_input_value(self, channel):
-        """_summary_ this function determines the ADC value at certain channel 
+        """_summary_ this function determines the ADC value at certain channel
 
         Args:
-            channel (int): the number of channel we are interested in 
+            channel (int): the number of channel we are interested in
 
         Returns:
-            int: ADC value at a certain channel 
+            int: ADC value at a certain channel
         """
         raw = self.device.query(f"MEAS:CH{channel}?")
         return raw
@@ -101,24 +101,27 @@ class ArduinoVISADevice:
     #        return the value of the input channel
     #
     def get_input_voltage(self, channel):
-        """_summary_ this function determines a voltage at a certain channel 
+        """_summary_ this function determines a voltage at a certain channel
 
         Args:
-            channel (int): channel number we want to investigate  
+            channel (int): channel number we want to investigate
 
         Returns:
-            voltage (float): voltage at this certain channel 
+            voltage (float): voltage at this certain channel
         """
         raw_ = self.device.query(f"MEAS:CH{channel}?")
         voltage = float(raw_) * (3.3 / 1024)
         return voltage
+
 
 # get available ports
 print(list_resources())
 
 # create an instance for the Arduino on port "ASRL/dev/cu.usbmodem14101::INSTR" (Mac-equivalent to ASRL28::INSTR)
 
-device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")  # I use thisone because I/m using mac
+device = ArduinoVISADevice(
+    port="ASRL/dev/cu.usbmodem14101::INSTR"
+)  # I use thisone because I/m using mac
 
 # turn of the LED
 device.set_output_voltage(voltage=0)
