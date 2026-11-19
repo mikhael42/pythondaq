@@ -32,9 +32,10 @@ def list():
 
 
 @cmd_group.command()
-@click.argument("name")
+
+@click.option("-o", "--output")
 @click.option("-r", "--range_", type=float)
-def scan(name, range_):
+def scan(output, range_):
     device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
     list_U = []
     list_I = []
@@ -53,12 +54,12 @@ def scan(name, range_):
     print(list_U)
     print(list_U)
 
-    with open(f"{name}.csv", "w", newline="") as csvfile:
+    with open(f"{output}.csv", "w", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(["voltage [V]", "current [mA]"])
         for U, I in zip(list_U, list_I):
             writer.writerow([U, I])
-            
+
     device.set_output_voltage(voltage=0)
 
 if __name__ == "__main__":
