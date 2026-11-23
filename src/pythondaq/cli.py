@@ -21,21 +21,29 @@ def cmd_group():
 
 
 @cmd_group.command()
-
 # @click.option("-d", "--diode")
 def list():
-    print("Work in progress, list devices")
-
+    list_ind = list_resources() 
+    return list_ind
 
 @cmd_group.command()
 
+@click.argument("port_")
+
+def info(port_):
+    device = ArduinoVISADevice(port=port_)
+    print(device.get_identification())
+
+@cmd_group.command()
+@click.argument("port__")
 @click.option("-o", "--output")
 @click.option("-ra", "--range_", type=float)
 @click.option("-re", "--repeat", type=int, default=1)
 @click.option("-st","--steps",type=float, default=0.1)
 
-def scan(output, range_, repeat, steps):
-    device = ArduinoVISADevice(port="ASRL/dev/cu.usbmodem14101::INSTR")
+
+def scan(port__, output, range_, repeat, steps):
+    device = ArduinoVISADevice(port=port__)
 
     list_mean_U=[]
     list_mean_I=[]
